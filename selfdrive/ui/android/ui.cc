@@ -45,19 +45,18 @@ static void send_ml(UIState *s, bool enabled) {
 
 static bool handle_ml_touch(UIState *s, int touch_x, int touch_y) {
   //mlButton manager
-  if ((s->awake && s->vision_connected && s->status != STATUS_STOPPED)) {
-    int padding = 40;
-    int btn_w = 400;
-    int btn_h = 138;
-    int xs[2] = {1920 / 2 + 75 - btn_w / 2, 1920 / 2 + 75 + btn_w / 2};
-    int y_top = 915 - btn_h / 2;
-    if (xs[0] <= touch_x + padding && touch_x - padding <= xs[1] && y_top - padding <= touch_y) {
-      s->scene.mlButtonEnabled = !s->scene.mlButtonEnabled;
-      send_ml(s, s->scene.mlButtonEnabled);
-      return true;
-    }
+  int padding = 40;
+  int btn_w = 500;
+  int btn_h = 138;
+  int xs[2] = {1920 / 2 - btn_w / 2, 1920 / 2 + btn_w / 2};
+  int y_top = 915 - btn_h / 2;
+  if (xs[0] <= touch_x + padding && touch_x - padding <= xs[1] && y_top - padding <= touch_y) {
+    s->scene.mlButtonEnabled = !s->scene.mlButtonEnabled;
+    send_ml(s, s->scene.mlButtonEnabled);
+    printf("ml button: %d\n", s->scene.mlButtonEnabled);
+    return true;
   }
-    return false;
+  return false;
 }
 
 static bool handle_SA_touched(UIState *s, int touch_x, int touch_y) {
