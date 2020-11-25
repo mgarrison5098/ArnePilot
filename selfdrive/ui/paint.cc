@@ -391,7 +391,7 @@ static void ui_draw_vision_maxspeed(UIState *s) {
   char maxspeed_str[32];
   float maxspeed = s->scene.controls_state.getVCruise();
   int maxspeed_calc = maxspeed * 0.6225 + 0.5;
-  float speedlimit = s->scene.speedlimit;	
+  float speedlimit = s->scene.speedlimit;
   int speedlim_calc = speedlimit * 2.2369363 + 0.5;
   if (s->is_metric) {
     maxspeed_calc = maxspeed + 0.5;
@@ -399,8 +399,8 @@ static void ui_draw_vision_maxspeed(UIState *s) {
   }
   int speed_lim_off = speedlim_calc * (1 + s->speed_lim_off / 100.0);
   bool is_cruise_set = (maxspeed != 0 && maxspeed != SET_SPEED_NA);
-  bool is_speedlim_valid = s->scene.speedlimit_valid;	
-  bool is_set_over_limit = is_speedlim_valid && s->scene.controls_state.getEnabled() &&	
+  bool is_speedlim_valid = s->scene.speedlimit_valid;
+  bool is_set_over_limit = is_speedlim_valid && s->scene.controls_state.getEnabled() &&
                        is_cruise_set && maxspeed_calc > (speedlim_calc + speed_lim_off);
   int viz_maxspeed_w = 184;
   int viz_maxspeed_h = 202;
@@ -436,61 +436,61 @@ static void ui_draw_vision_maxspeed(UIState *s) {
   }
 }
 
-static void ui_draw_vision_speedlimit(UIState *s) {	
-  char speedlim_str[32];	
-  float speedlimit = s->scene.speedlimit;	
-  int speedlim_calc = speedlimit * 2.2369363 + 0.5;	
-  if (s->is_metric) {	
-    speedlim_calc = speedlimit * 3.6 + 0.5;	
-  }	
+static void ui_draw_vision_speedlimit(UIState *s) {
+  char speedlim_str[32];
+  float speedlimit = s->scene.speedlimit;
+  int speedlim_calc = speedlimit * 2.2369363 + 0.5;
+  if (s->is_metric) {
+    speedlim_calc = speedlimit * 3.6 + 0.5;
+  }
 
-  bool is_speedlim_valid = s->scene.speedlimit_valid;	
-  float hysteresis_offset = 0.5;	
-  if (s->is_ego_over_limit) {	
-    hysteresis_offset = 0.0;	
-  }	
-  s->is_ego_over_limit = is_speedlim_valid && s->scene.controls_state.getVEgo() > (speedlimit + hysteresis_offset);	
+  bool is_speedlim_valid = s->scene.speedlimit_valid;
+  float hysteresis_offset = 0.5;
+  if (s->is_ego_over_limit) {
+    hysteresis_offset = 0.0;
+  }
+  s->is_ego_over_limit = is_speedlim_valid && s->scene.controls_state.getVEgo() > (speedlimit + hysteresis_offset);
 
-  int viz_speedlim_w = 180;	
-  int viz_speedlim_h = 202;	
-  int viz_speedlim_x = (s->video_rect.x + (bdr_is*2));	
-  int viz_speedlim_y = (s->video_rect.y + (bdr_is*1.5));	
-  if (!is_speedlim_valid) {	
-    viz_speedlim_w -= 5;	
-    viz_speedlim_h -= 10;	
-    viz_speedlim_x += 9;	
-    viz_speedlim_y += 5;	
-  }	
-  // Draw Background	
-  NVGcolor color = COLOR_WHITE_ALPHA(100);	
-  if (is_speedlim_valid && s->is_ego_over_limit) {	
-    color = nvgRGBA(218, 111, 37, 180);	
-  } else if (is_speedlim_valid) {	
-    color = COLOR_WHITE;	
-  }	
-  ui_draw_rect(s->vg, viz_speedlim_x, viz_speedlim_y, viz_speedlim_w, viz_speedlim_h, color, is_speedlim_valid ? 30 : 15);	
+  int viz_speedlim_w = 180;
+  int viz_speedlim_h = 202;
+  int viz_speedlim_x = (s->video_rect.x + (bdr_is*2));
+  int viz_speedlim_y = (s->video_rect.y + (bdr_is*1.5));
+  if (!is_speedlim_valid) {
+    viz_speedlim_w -= 5;
+    viz_speedlim_h -= 10;
+    viz_speedlim_x += 9;
+    viz_speedlim_y += 5;
+  }
+  // Draw Background
+  NVGcolor color = COLOR_WHITE_ALPHA(100);
+  if (is_speedlim_valid && s->is_ego_over_limit) {
+    color = nvgRGBA(218, 111, 37, 180);
+  } else if (is_speedlim_valid) {
+    color = COLOR_WHITE;
+  }
+  ui_draw_rect(s->vg, viz_speedlim_x, viz_speedlim_y, viz_speedlim_w, viz_speedlim_h, color, is_speedlim_valid ? 30 : 15);
 
-  // Draw Border	
-  if (is_speedlim_valid) {	
-    ui_draw_rect(s->vg, viz_speedlim_x, viz_speedlim_y, viz_speedlim_w, viz_speedlim_h,	
-                 s->is_ego_over_limit ? COLOR_OCHRE : COLOR_WHITE, 20, 10);	
-  }	
-  const float text_x = viz_speedlim_x + viz_speedlim_w / 2;	
-  const float text_y = viz_speedlim_y + (is_speedlim_valid ? 50 : 45);	
-  // Draw "Speed Limit" Text	
-  nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);	
-  color = is_speedlim_valid && s->is_ego_over_limit ? COLOR_WHITE : COLOR_BLACK;	
-  ui_draw_text(s->vg, text_x + (is_speedlim_valid ? 6 : 0), text_y, "SMART", 50, color, s->font_sans_semibold);	
-  ui_draw_text(s->vg, text_x + (is_speedlim_valid ? 6 : 0), text_y + 40, "SPEED", 50, color, s->font_sans_semibold);	
+  // Draw Border
+  if (is_speedlim_valid) {
+    ui_draw_rect(s->vg, viz_speedlim_x, viz_speedlim_y, viz_speedlim_w, viz_speedlim_h,
+                 s->is_ego_over_limit ? COLOR_OCHRE : COLOR_WHITE, 20, 10);
+  }
+  const float text_x = viz_speedlim_x + viz_speedlim_w / 2;
+  const float text_y = viz_speedlim_y + (is_speedlim_valid ? 50 : 45);
+  // Draw "Speed Limit" Text
+  nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
+  color = is_speedlim_valid && s->is_ego_over_limit ? COLOR_WHITE : COLOR_BLACK;
+  ui_draw_text(s->vg, text_x + (is_speedlim_valid ? 6 : 0), text_y, "SMART", 50, color, s->font_sans_semibold);
+  ui_draw_text(s->vg, text_x + (is_speedlim_valid ? 6 : 0), text_y + 40, "SPEED", 50, color, s->font_sans_semibold);
 
-  // Draw Speed Text	
-  color = s->is_ego_over_limit ? COLOR_WHITE : COLOR_BLACK;	
-  if (is_speedlim_valid) {	
-    snprintf(speedlim_str, sizeof(speedlim_str), "%d", speedlim_calc);	
-    ui_draw_text(s->vg, text_x, viz_speedlim_y + (is_speedlim_valid ? 170 : 165), speedlim_str, 48*2.5, color, s->font_sans_bold);	
-  } else {	
-    ui_draw_text(s->vg, text_x, viz_speedlim_y + (is_speedlim_valid ? 170 : 165), "N/A", 42*2.5, color, s->font_sans_semibold);	
-  }	
+  // Draw Speed Text
+  color = s->is_ego_over_limit ? COLOR_WHITE : COLOR_BLACK;
+  if (is_speedlim_valid) {
+    snprintf(speedlim_str, sizeof(speedlim_str), "%d", speedlim_calc);
+    ui_draw_text(s->vg, text_x, viz_speedlim_y + (is_speedlim_valid ? 170 : 165), speedlim_str, 48*2.5, color, s->font_sans_bold);
+  } else {
+    ui_draw_text(s->vg, text_x, viz_speedlim_y + (is_speedlim_valid ? 170 : 165), "N/A", 42*2.5, color, s->font_sans_semibold);
+  }
 }
 
 static void ui_draw_vision_speed(UIState *s) {
@@ -656,6 +656,34 @@ static void ui_draw_driver_view(UIState *s) {
   const int x2 = (valid_frame_x + (brake_size * 5) + (bdr_is * 2.5) + 200);
   const int y2 = (box_y + box_h - brake_size - bdr_s - (bdr_s * 1.5));
   ui_draw_circle_image(s->vg, x2, y2+border_shifter+25, brake_size-5, s->img_brake, s->scene.brakeLights);
+}
+
+static void ui_draw_ml_button(UIState *s) {
+  int btn_w = 500;
+  int btn_h = 138;
+  int x = 1920 / 2;
+  int y = 915;
+  int btn_x = x - btn_w / 2;
+  int btn_y = y - btn_h / 2;
+
+  nvgBeginPath(s->vg);
+  nvgRoundedRect(s->vg, btn_x, btn_y, btn_w, btn_h, 25);
+  if (s->scene.mlButtonEnabled) {  // change outline color based on status of button
+    nvgStrokeColor(s->vg, nvgRGBA(55, 184, 104, 255));
+  } else {
+    nvgStrokeColor(s->vg, nvgRGBA(184, 55, 55, 255));
+  }
+  nvgStrokeWidth(s->vg, 12);
+  nvgStroke(s->vg);
+
+  nvgBeginPath(s->vg);  // dark background for readability
+  nvgRoundedRect(s->vg, btn_x, btn_y, btn_w, btn_h, 25);
+  nvgFillColor(s->vg, nvgRGBA(75, 75, 75, 75));
+  nvgFill(s->vg);
+
+  nvgFillColor(s->vg, nvgRGBA(255, 255, 255, 255));
+  nvgFontSize(s->vg, 65);
+  nvgText(s->vg, x, y + btn_h / 8, "Toggle Model Long", NULL);
 }
 
 static void ui_draw_vision_header(UIState *s) {
@@ -983,6 +1011,7 @@ static void ui_draw_vision_footer(UIState *s) {
   ui_draw_vision_brake(s);
   bb_ui_draw_UI(s);
   ui_draw_vision_map(s);
+  ui_draw_ml_button(s);
 }
 
 void ui_draw_vision_alert(UIState *s, cereal::ControlsState::AlertSize va_size, UIStatus va_color,
@@ -1184,7 +1213,7 @@ void ui_nvg_init(UIState *s) {
 
   s->img_wheel = nvgCreateImage(s->vg, "../assets/img_chffr_wheel.png", 1);
   assert(s->img_wheel != 0);
-  s->img_map = nvgCreateImage(s->vg, "../assets/img_map.png", 1);	
+  s->img_map = nvgCreateImage(s->vg, "../assets/img_map.png", 1);
   assert(s->img_map != 0);
   s->img_speed = nvgCreateImage(s->vg, "../assets/img_trafficSign_speedahead.png", 1);
   assert(s->img_speed != 0);
