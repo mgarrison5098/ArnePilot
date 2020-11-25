@@ -99,7 +99,7 @@ if not prebuilt:
     env['SCONS_CACHE'] = "1"
 
     nproc = os.cpu_count()
-    j_flag = "" if nproc is None else "-j%d" % (nproc - 1)
+    j_flag = "" if nproc is None else "-j8"
     scons = subprocess.Popen(["scons", j_flag], cwd=BASEDIR, env=env, stderr=subprocess.PIPE)
 
     compile_output = []
@@ -135,8 +135,8 @@ if not prebuilt:
           for i in range(3, -1, -1):
             print("....%d" % i)
             time.sleep(1)
-          subprocess.check_call(["scons", "-c"], cwd=BASEDIR, env=env)
-          shutil.rmtree("/tmp/scons_cache")
+          #subprocess.check_call(["scons", "-c"], cwd=BASEDIR, env=env)
+          #shutil.rmtree("/tmp/scons_cache")
         else:
           print("scons build failed after retry")
           process = subprocess.check_output(['git', 'pull'])
@@ -579,7 +579,7 @@ def main():
 
     # disable bluetooth
     os.system('service call bluetooth_manager 8')
-    
+
   # Enable Hotspot On Boot
   if op_params.get('hotspot_on_boot'):
     os.system("service call wifi 37 i32 0 i32 1 &")
