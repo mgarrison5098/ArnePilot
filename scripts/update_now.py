@@ -3,7 +3,7 @@ import datetime
 from common.params import Params
 from selfdrive.data_collection import gps_uploader
 
-print("Don't forget to pray!")
+
 
 params = Params()
 t = datetime.datetime.utcnow().isoformat()
